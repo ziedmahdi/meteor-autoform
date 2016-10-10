@@ -9,7 +9,7 @@ Package.onUse(function(api) {
   // Dependencies
   api.versionsFrom(['METEOR@0.9.3', 'METEOR@0.9.4', 'METEOR@1.0']);
   // common
-  api.use('aldeed:simple-schema@1.1.0');
+  api.use('aldeed:simple-schema@1.5.3');
   api.use('check');
   // client
   api.use(['livedata', 'underscore', 'deps', 'templating', 'ui', 'blaze', 'ejson', 'reactive-var', 'reactive-dict', 'random', 'jquery'], 'client');
@@ -18,15 +18,14 @@ Package.onUse(function(api) {
   api.use('aldeed:moment-timezone@0.4.0', 'client', {weak: true});
   api.use(['aldeed:collection2@2.0.0', 'reload'], 'client', {weak: true});
 
-  // Imply SS to make sure SimpleSchema object is available to app
-  api.imply('aldeed:simple-schema');
-
   // Exports
+  api.export('SimpleSchema');
   api.export('AutoForm', 'client');
   api.export('Utility', 'client', {testOnly: true});
+  api.export('humanize', {testOnly: true});
 
   // Common Files
-  api.addFiles(['autoform-common.js']);
+  api.addFiles(['autoform-common.js', 'string-humanize.js']);
 
   // Client Files
   api.addFiles([
@@ -37,6 +36,10 @@ Package.onUse(function(api) {
     'autoform-formdata.js',
     'autoform-arrays.js',
     'autoform.js',
+    // settings
+    'autoform-settings.js',
+    // schema alteration
+    'autoform-placeholder.js',
     // global helpers
     'autoform-helpers.js',
     // validation
@@ -227,5 +230,11 @@ Package.onUse(function(api) {
 Package.onTest(function (api) {
   api.use(['aldeed:autoform', 'tinytest', 'underscore', 'mongo']);
   api.use('momentjs:moment', 'client');
-  api.addFiles(['tests/utility-tests.js', 'tests/autoform-tests.js']);
+  
+  api.addFiles('tests/autoform-tests.js', 'client');
+  
+  api.addFiles([
+    'tests/utility-tests.js',
+    'tests/humanize-tests.js'
+  ]);
 });
